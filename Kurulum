@@ -1,0 +1,31 @@
+# Sistem paketlerini güncelle
+sudo apt update && sudo apt upgrade -y
+
+# Gerekli bağımlılıkları kur
+sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+
+# Docker'ın resmi GPG anahtarını ekle ve depoyu kur
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Docker ve Docker Compose'u yükle
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+
+# Klasörü oluştur ve içine gir
+sudo mkdir /opt/xibo
+sudo chown $USER:$USER /opt/xibo
+cd /opt/xibo
+
+# Xibo Docker dosyalarını indir (En son sürüm)
+wget -O xibo-docker.tar.gz https://xibo.org.uk/api/downloads/cms
+tar -xvzf xibo-docker.tar.gz --strip-components=1
+
+# Örnek dosyayı kopyala
+cp config.env.template config.env
+
+# Dosyayı düzenle
+nano config.env
+
+
+sudo docker compose up -dkurulum
